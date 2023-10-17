@@ -67,8 +67,8 @@
                 var vidElem = $('<video width="' + width + 'px" height="' + height + 'px"></video>').appendTo(currentElem);
                 var canvasElem = $('<canvas id="qr-canvas" width="' + (width - 2) + 'px" height="' + (height - 2) + 'px" style="display:none;"></canvas>').appendTo(currentElem);
 
-                var video = vidElem[0];
-                var canvas = canvasElem[0];
+                var video = vidElem[1];
+                var canvas = canvasElem[1];
                 var context = canvas.getContext('2d');
                 var localMediaStream;
 
