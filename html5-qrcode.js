@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
     var cameraIds = [];
 
     /**
@@ -28,8 +28,8 @@
          * @param: videoError (function) - callback on video error
          * @param: camera (int) - which camera to use
          */
-        html5_qrcode: function(qrcodeSuccess, qrcodeError, videoError, camera) {
-            return this.each(function() {
+        html5_qrcode: function (qrcodeSuccess, qrcodeError, videoError, camera) {
+            return this.each(function () {
 
                 var currentElem = $(this);
 
@@ -42,7 +42,7 @@
                 else $.data(currentElem[0], "sourceId", 0);
 
                 if (typeof cameraIds[currentElem.data('sourceId')] != 'undefined')
-                    $.data(currentElem[0], "cameraId", cameraIds[currentElem.data('sourceId')] );
+                    $.data(currentElem[0], "cameraId", cameraIds[currentElem.data('sourceId')]);
 
                 var height = currentElem.height();
                 var width = currentElem.width();
@@ -63,7 +63,7 @@
                 var context = canvas.getContext('2d');
                 var localMediaStream;
 
-                var scan = function() {
+                var scan = function () {
                     if (localMediaStream) {
                         context.drawImage(video, 0, 0, 307, 250);
 
@@ -83,8 +83,8 @@
                 window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
                 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
-                var successCallback = function(stream) {
-                    video.src = (window.URL && window.URL.createObjectURL(stream)) || stream;
+                var successCallback = function (stream) {
+                    video.srcObject = stream; // Use the srcObject property
                     localMediaStream = stream;
                     $.data(currentElem[0], "stream", stream);
 
@@ -94,18 +94,18 @@
 
                 // Call the getUserMedia method with our callback functions
                 if (navigator.getUserMedia) {
-                    var config = {video: true};
+                    var config = { video: true };
                     if (typeof currentElem.data("cameraId") != 'undefined') {
                         config = {
                             video: {
-                              optional: [{
-                                sourceId: currentElem.data("cameraId")
-                              }]
+                                optional: [{
+                                    sourceId: currentElem.data("cameraId")
+                                }]
                             }
-                          };
+                        };
                     }
 
-                    navigator.getUserMedia(config, successCallback, function(error) {
+                    navigator.getUserMedia(config, successCallback, function (error) {
                         if (typeof videoError == 'function') videoError(error, localMediaStream);
                         else console.log('Error callback is undefined or not a function.');
                     });
@@ -121,10 +121,10 @@
                 };
             }); // end of html5_qrcode
         },
-        html5_qrcode_stop: function() {
-            return this.each(function() {
+        html5_qrcode_stop: function () {
+            return this.each(function () {
                 //stop the stream and cancel timeouts
-                $(this).data('stream').getVideoTracks().forEach(function(videoTrack) {
+                $(this).data('stream').getVideoTracks().forEach(function (videoTrack) {
                     videoTrack.stop();
                 });
 
@@ -134,8 +134,8 @@
                 clearTimeout($(this).data('timeout'));
             });
         },
-        html5_qrcode_changeCamera: function() {
-            return this.each(function() {
+        html5_qrcode_changeCamera: function () {
+            return this.each(function () {
                 //stop the stream and cancel timeouts
                 $(this).html5_qrcode_stop();
                 $(this).html5_qrcode(
@@ -146,7 +146,7 @@
                 );
             });
         },
-        html5_qrcode_cameraCount: function() {
+        html5_qrcode_cameraCount: function () {
             return cameraIds.length;
         }
     });
