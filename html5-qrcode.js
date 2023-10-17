@@ -7,7 +7,9 @@
     function gotSources(sourceInfos) {
         for (var i = 0; i !== sourceInfos.length; ++i) {
             var sourceInfo = sourceInfos[i];
+            console.log(sourceInfo);
             if (sourceInfo.kind === 'video') {
+                console.log(sourceInfo.id);
                 cameraIds.push(sourceInfo.id);
             }
         }
@@ -28,7 +30,7 @@
          * @param: videoError (function) - callback on video error
          * @param: camera (int) - which camera to use
          */
-        html5_qrcode: function (qrcodeSuccess, qrcodeError, videoError, camera) {
+        html5_qrcode: function (qrcodeSuccess, qrcodeError, videoError, camera) {            
             return this.each(function () {
 
                 var currentElem = $(this);
@@ -37,12 +39,19 @@
                 $.data(currentElem[0], "qrcodeError", qrcodeError);
                 $.data(currentElem[0], "videoError", videoError);
 
-                if (typeof camera != 'undefined' && typeof cameraIds[camera] != 'undefined')
+                if (typeof camera != 'undefined' && typeof cameraIds[camera] != 'undefined'){
                     $.data(currentElem[0], "sourceId", camera);
-                else $.data(currentElem[0], "sourceId", 0);
+                    console.log("camara: "+ camera);                
+                }
+                else {
+                    $.data(currentElem[0], "sourceId", 1);                    
+                console.log("48 camara: " + camera);
+                }
 
-                if (typeof cameraIds[currentElem.data('sourceId')] != 'undefined')
+                if (typeof cameraIds[currentElem.data('sourceId')] != 'undefined'){
                     $.data(currentElem[0], "cameraId", cameraIds[currentElem.data('sourceId')]);
+                    console.log("53 camara: " + cameraIds);
+                }
 
                 var height = currentElem.height();
                 var width = currentElem.width();
